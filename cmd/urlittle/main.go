@@ -1,18 +1,14 @@
 package main
 
 import (
-	"log"
-
 	"github.com/gin-gonic/gin"
+	"github.com/urlittle/pkg/server"
 )
-
-type resp struct {
-	StatusCode int
-	Body       string
-}
 
 func main() {
 	router := gin.Default()
+	testEndpoint := EndpointNoArgs{"/test", getTest}
+	router.GET(testEndpoint.Route, testEndpoint.Method)
 
 	// This sets the trusted IPs, not really sure how this works
 	router.SetTrustedProxies([]string{"localhost", "::1"})
