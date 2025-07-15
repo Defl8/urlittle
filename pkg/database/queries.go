@@ -5,6 +5,8 @@ import (
 	"errors"
 )
 
+const all_urls_query = "select * from urls"
+
 type Database struct {
 	URL string
 }
@@ -28,4 +30,9 @@ func (d Database) ExecQuery(query string, args ...any) (*sql.Rows, error) {
 		return rows, errors.New("Could not execute query")
 	}
 	return rows, nil
+}
+
+// Generate map of URLs where key is original url and value is URL type
+func (d Database) GetURLs() {
+	rows, err := d.ExecQuery(all_urls_query)
 }
