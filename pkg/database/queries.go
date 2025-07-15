@@ -3,8 +3,6 @@ package database
 import (
 	"database/sql"
 	"errors"
-	"fmt"
-	"os"
 )
 
 type Database struct {
@@ -17,4 +15,17 @@ func (d Database) Connect() (*sql.DB, error) {
 		return nil, errors.New("Could not open connection to database.")
 	}
 	return db, nil
+}
+
+func (d Database) ExecQuery(query string, args ...any) (*sql.Rows, error) {
+	db, err := d.Connect()
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	rows, err := db.Query(query, args...)
+	if err != nil {
+		return rows, errors.New("Could not execute query")
+	}
+	return rows, nil
 }
