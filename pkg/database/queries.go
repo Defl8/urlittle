@@ -39,9 +39,20 @@ func (d Database) GetURLs() ([]*URL, error) {
 		return nil, errors.New("Could not get rows from the database.")
 	}
 	defer rows.Close()
-	for rows.Next() {
 
+	if err = rows.Err(); err != nil {
+		return nil, errors.New("Error during row iteration.")
 	}
 
-	return rows, nil
+	var urls []*URL
+	for rows.Next() {
+		var url URL
+		if err := rows.Scan(&url.ID, &url.OriginalURL, &url.ShortenedHash, &url.DateCreated); err != nil {
+			return urls, errors.New("Error scanning rows.")
+		}
+
+		urls = append(urls, &url)
+	}
+
+	return urls, nil
 }
