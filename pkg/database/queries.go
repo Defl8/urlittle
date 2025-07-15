@@ -33,6 +33,15 @@ func (d Database) ExecQuery(query string, args ...any) (*sql.Rows, error) {
 }
 
 // Generate map of URLs where key is original url and value is URL type
-func (d Database) GetURLs() {
+func (d Database) GetURLs() ([]*URL, error) {
 	rows, err := d.ExecQuery(all_urls_query)
+	if err != nil {
+		return nil, errors.New("Could not get rows from the database.")
+	}
+	defer rows.Close()
+	for rows.Next() {
+
+	}
+
+	return rows, nil
 }
