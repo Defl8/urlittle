@@ -55,7 +55,7 @@ func (d Database) GetURLs() ([]*URL, error) {
 	for rows.Next() {
 		var url URL
 		if err := rows.Scan(&url.ID, &url.OriginalURL, &url.ShortenedHash, &url.DateCreated); err != nil {
-			return urls, errors.New("Error scanning rows.")
+			return urls, err
 		}
 
 		urls = append(urls, &url)
