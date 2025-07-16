@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -39,7 +40,8 @@ func TestExecuteQuery(t *testing.T) {
 	if err != nil {
 		t.Errorf("Could not load .env file. ERROR: %v", err)
 	}
-	_, err = dbInst.ExecQuery("SELECT id FROM urls")
+	rows, err := dbInst.ExecQuery("SELECT id FROM urls")
+	defer rows.Close()
 	if err != nil {
 		t.Errorf("Could not query the database. ERROR: %v", err)
 	}
