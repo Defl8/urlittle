@@ -34,7 +34,7 @@ func (d Database) ExecQuery(query string, args ...any) (*sql.Rows, error) {
 	defer db.Close()
 	rows, err := db.Query(query, args...)
 	if err != nil {
-		return rows, errors.New("Could not execute query")
+		return rows, err
 	}
 	return rows, nil
 }
