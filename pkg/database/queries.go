@@ -11,6 +11,12 @@ type Database struct {
 	URL string
 }
 
+func NewDatabase(url string) *Database {
+	return &Database{
+		URL: url,
+	}
+}
+
 func (d Database) Connect() (*sql.DB, error) {
 	db, err := sql.Open("libsql", d.URL)
 	if err != nil {
