@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"errors"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
 const all_urls_query = "select * from urls"

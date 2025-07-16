@@ -1,7 +1,6 @@
 package main
 
 import (
-	server "github.com/Defl8/urlittle/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
