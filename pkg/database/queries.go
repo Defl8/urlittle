@@ -63,3 +63,11 @@ func (d Database) GetURLs() ([]*URL, error) {
 
 	return urls, nil
 }
+
+func (d Database) AddURL(url *URL) error {
+	_, err := d.ExecQuery("insert into urls(original_url, shortened_has, date_created) values(?, ?, ?)", url.OriginalURL, url.ShortenedHash, url.DateCreated)
+	if err != nil {
+		return err
+	}
+	return nil
+}
