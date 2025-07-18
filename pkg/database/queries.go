@@ -39,22 +39,22 @@ func (d Database) ExecQuery(query string, args ...any) (*sql.Rows, error) {
 	return rows, nil
 }
 
-// Generate map of URLs where key is original url and value is URL type
 func (d Database) GetURLs() ([]*URL, error) {
 	rows, err := d.ExecQuery(all_urls_query)
 	if err != nil {
-		return nil, errors.New("Could not get rows from the database.")
+		return nil, err
 	}
 	defer rows.Close()
 
 	if err = rows.Err(); err != nil {
-		return nil, errors.New("Error during row iteration.")
+		return nil, err
 	}
 
 	var urls []*URL
 	for rows.Next() {
 		var url URL
-		if err := rows.Scan(&url.ID, &url.OriginalURL, &url.ShortenedHash, &url.DateCreated); err != nil {
+		err := rows.Scan(&url.ID, &url.OriginalURL, &url.ShortenedHash, &url.DateCreated)
+		if err != nil {
 			return urls, err
 		}
 
