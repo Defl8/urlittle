@@ -3,6 +3,8 @@ package database
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+
 	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
@@ -19,10 +21,12 @@ func NewDatabase(url string) *Database {
 }
 
 func (d Database) Connect() (*sql.DB, error) {
+	fmt.Println("Attempting to connect to the database...")
 	db, err := sql.Open("libsql", d.URL)
 	if err != nil {
-		return nil, errors.New("Could not open connection to database.")
+		return nil, err
 	}
+	fmt.Println("Successfully connected to the database.")
 	return db, nil
 }
 
@@ -40,6 +44,7 @@ func (d Database) ExecQuery(query string, args ...any) (*sql.Rows, error) {
 }
 
 func (d Database) GetURLs() ([]*URL, error) {
+	fmt.Println("Fetching URLs from the database...")
 	rows, err := d.ExecQuery(all_urls_query)
 	if err != nil {
 		return nil, err
@@ -60,14 +65,16 @@ func (d Database) GetURLs() ([]*URL, error) {
 
 		urls = append(urls, &url)
 	}
-
+	fmt.Printf("Returned %d URLs from the database.\n", len(urls))
 	return urls, nil
 }
 
 func (d Database) AddURL(url *URL) error {
+	fmt.Println("Attempting to insert a new URL into the database.")
 	_, err := d.ExecQuery("insert into urls(original_url, shortened_has, date_created) values(?, ?, ?)", url.OriginalURL, url.ShortenedHash, url.DateCreated)
 	if err != nil {
 		return err
 	}
+	fmt.Println("URL was successfully inserted into the database.")
 	return nil
 }
