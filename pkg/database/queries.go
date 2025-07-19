@@ -2,9 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
-
 	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
@@ -71,7 +69,7 @@ func (d Database) GetURLs() ([]*URL, error) {
 
 func (d Database) AddURL(url *URL) error {
 	fmt.Println("Attempting to insert a new URL into the database.")
-	_, err := d.ExecQuery("insert into urls(original_url, shortened_has, date_created) values(?, ?, ?)", url.OriginalURL, url.ShortenedHash, url.DateCreated)
+	_, err := d.ExecQuery("insert into urls(original_url, shortened_hash, date_created) values(?, ?, ?)", url.OriginalURL, url.ShortenedHash, url.DateCreated)
 	if err != nil {
 		return err
 	}
